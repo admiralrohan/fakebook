@@ -9,16 +9,16 @@ if (session_status() == PHP_SESSION_NONE) {
     // exit();
 // } else {
     // echo session_id()." 2nd";
-    // $_SESSION = array();
+    $_SESSION = array();
 
-    // if (ini_get("session.use_cookies")) {
-    //     echo session_id()." 3nd";
-    //     $params = session_get_cookie_params();
-    //     setcookie(session_name(), '', time() - 42000,
-    //         $params["path"], $params["domain"],
-    //         $params["secure"], $params["httponly"]
-    //     );
-    // }
+    if (ini_get("session.use_cookies")) {
+        // echo session_id()." 3nd";
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
 
     if (session_status() == PHP_SESSION_ACTIVE) {
         // echo " 4th";

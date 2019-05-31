@@ -1,5 +1,6 @@
 <?php
-require_once("./env.php");
+// require_once(dirname(__FILE__) . "/../env.php");
+require_once(__DIR__ . "/../env.php");
 
 try {
     $db = new mysqli($db_host, $db_username, $db_password, $db_name);

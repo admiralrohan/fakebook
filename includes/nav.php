@@ -1,3 +1,11 @@
+<?php
+function addActiveClass($page_name) {
+  if(basename($_SERVER["PHP_SELF"]) == $page_name) {
+    echo "active";
+  }
+}
+?>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand font-weight-bold logo" href="index.php">Fakebook</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,19 +14,21 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li class="nav-item <?= addActiveClass("profile.php") ?>">
         <a class="nav-link" href="profile.php">Profile</span></a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item dropdown <?= addActiveClass("received_friend_requests.php") ?>">
+        <a class="nav-link dropdown-toggle" href="received_friend_requests.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Friends
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Received Friend Requests</a>
-          <a class="dropdown-item" href="#">Sent Friend Requests</a>
+          <a class="dropdown-item" href="received_friend_requests.php">Received Friend Requests</a>
+          <a class="dropdown-item" href="sent_friend_requests.php">Sent Friend Requests</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="friend_list.php">Friend List</a>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item <?= addActiveClass("inbox.php") ?>">
         <a class="nav-link" href="inbox.php">Inbox</a>
       </li>
       <li class="nav-item">
