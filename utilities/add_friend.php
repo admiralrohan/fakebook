@@ -25,24 +25,32 @@ if (! isset($_GET["id"])) {
     $stmt->store_result();
 
     // If the user id exists
-    if ($stmt->num_rows) {
-        $profile_id = $id;
-        $profile_name = $name;
+    if ($stmt->num_rows == 1) {
         $stmt->free_result();
 
-        $query = "INSERT into friend_requests (request_id, request_from, request_to, request_on, request_status) VALUES (NULL, ?, ?, NOW(), 'pending')";
-        $stmt->prepare($query);
-        $stmt->bind_param('ii', $own_id, $friend_id);
-        $stmt->execute();
+        $query = "SELECT request_id from friend_requests where (request_from = {$own_id} && request_to = {$friend_id}) && (request_status = 'pending' || request_status = 'accepted') UNION SELECT request_id from friend_requests where (request_from = {$friend_id} && request_to = {$own_id}) && (request_status = 'pending' || request_status = 'accepted')";
 
-        if ($stmt->affected_rows == 1) {
-            header("Location: ./../profile.php?id=" . $friend_id);
+        $result = $db->query($query);
+
+        // Check if he is already a friend / there already a request from that person / already a request sent to that person, if not send request
+        if ($result->num_rows == 0) {
+            $query = "INSERT into friend_requests (request_id, request_from, request_to, request_on, request_status) VALUES (NULL, ?, ?, NOW(), 'pending')";
+            $stmt->prepare($query);
+            $stmt->bind_param('ii', $own_id, $friend_id);
+            $stmt->execute();
+
+            if ($stmt->affected_rows == 1) {
+                header("Location: ./../profile.php?id=" . $friend_id);
+            } else {
+                header("Location: ./../profile.php?id=" . $friend_id);
+            }
+
+            $db->close();
+            exit();
         } else {
-            header("Location: ./../profile.php?id=" . $friend_id);
+            header("Location: ./../profile.php");
+            exit();
         }
-
-        $db->close();
-        exit();
     } else {
         header("Location: ./../profile.php");
         exit();

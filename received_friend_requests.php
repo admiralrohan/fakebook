@@ -9,94 +9,60 @@ if (! isset($_SESSION['user_id'])) {
     exit();
 }
 
-// $success = array();
-// $errors = array();
-$friend = array();
+$friends = array();
 
 require_once("./utilities/connect_to_db.php");
-
-// Check if the provided id is valid, and fetch user's name
-// if (! isset($_GET["id"])) {
-//     $profile_id = (int) $_SESSION["user_id"];
-//     $profile_name = $_SESSION["user_name"];
-// } else {
-//     $id = (int) $_GET["id"];
-//     $query = "SELECT CONCAT(fname, ' ', lname) AS user_name from users where user_id = ?";
-//     $stmt = $db->stmt_init();
-//     $stmt->prepare($query);
-//     $stmt->bind_param('i', $id);
-//     $stmt->execute();
-//     $stmt->bind_result($name);
-//     $stmt->fetch();
-
-//     if (isset($name)) {
-//         $profile_id = $id;
-//         $profile_name = $name;
-//         $stmt->close();
-//     } else {
-//         header("Location: page_not_found.php");
-//         exit();
-//     }
-// }
-
-// $is_own_profile = $profile_id == $_SESSION["user_id"];
-
-// require_once("./classes/post.class.php");
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     require("./utilities/process_create_post.php");
-// }
-
+include("./classes/friend.class.php");
 include("./includes/header.php");
 include("./includes/nav.php");
-// include("./includes/posts_by_user.php");
+
+$profile_id = (int) $_SESSION["user_id"];
+$q = "SELECT user_id, CONCAT(fname, ' ', lname) as user_name from users where user_id IN
+(SELECT request_from from friend_requests where request_to = {$profile_id} && request_status = 'pending')";
+$result = $db->query($q);
+
+while ($row = $result->fetch_object()) {
+    $friends[] = new Friend($row->user_id, $row->user_name);
+}
 ?>
 
 <div class="w-50 my-3 vertical-center">
-    <div class="text-center font-weight-bold mb-2"><?= $profile_name ?></div>
-    <br>
-    <?php if ($is_own_profile) { ?>
-        <div class="card p-3">
-            <form method="POST" action="timeline.php">
-                <div class="form-group">
-                    <label for="post_content" class="font-weight-bold">Create Post</label>
-                    <?php include("./includes/show_success.php"); ?>
-                    <?php include("./includes/show_errors.php"); ?>
-                    <textarea class="form-control" id="post_content" rows="5" name="post_content" placeholder="Write something here..."></textarea>
-                </div>
+    <?php if (empty($friends)) { ?>
+        <div class="card p-3 my-2">
+            <div class="card-title text-center my-0">
+                <a href="sent_friend_requests.php">View Sent Requests</a>
+            </div>
+            <hr>
+            <div class="card-body">
+                <span>It looks like there are no incoming friend requests for you at this moment.</span>
+            </div>
+        </div>
+    <?php } else { ?>
+        <div class="card p-3 my-2">
+            <div class="card-title font-weight-bold text-center">Respond to Your <?= count($friends) ?> Friend Requests</div>
+            <div class="card-subtitle text-center">
+                <a href="sent_friend_requests.php">View Sent Requests</a>
+            </div>
+            <hr>
 
-                <button type="submit" class="btn btn-primary mb-2">Share Post</button>
-            </form>
+            <div class="card-body">
+                <?php foreach ($friends as $friend) { ?>
+                    <div class="card-text row">
+                        <div class="col-sm-7 text-left">
+                            <a href="profile.php?id=<?= $friend->id ?>" ?><?= $friend->name ?></a>
+                            <!-- <span>1 mutual friend</span> -->
+                        </div>
+
+                        <div class="col-sm-5 text-right">
+                            <a href="./utilities/confirm_request.php?id=<?= $friend->id ?>" class="btn btn-sm btn-primary">Confirm</a>
+                            <a href="./utilities/delete_request.php?id=<?= $friend->id ?>" class="btn btn-sm btn-secondary">Delete Request</a>
+                        </div>
+                    </div>
+                    <hr>
+                <?php } ?>
+            </div>
+            </div>
         </div>
     <?php } ?>
-
-    <?php if (empty($posts)) { ?>
-        <div class="card p-3 my-2">
-            It looks like there are no posts available to view at this moment.
-        </div>
-    <?php } else {
-            foreach ($posts as $post) {
-        ?>
-            <div class="card p-3 my-2">
-                <div class="card-title font-weight-bold">
-                    <a href=<?php "profile.php?id={$post->post_owner_id}" ?> ><?= $post->post_owner_name ?></a>
-                </div>
-                <div class="card-subtitle"><?= $post->posted_on ?></div>
-                <div class="card-text my-2"><?= nl2br(mb_substr($post->post_content, 0, 1000)) . "<br><br><a href='post.php?id={$post->post_id}'>See Full Story</a>" ?></div>
-
-                <hr>
-                <div class="row">
-                    <div class="col-sm-4 text-center">
-                        <a href="#" class="btn btn-sm btn-primary">Like <i class="fas fa-thumbs-up"></i></a>
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        <a href="#" class="btn btn-sm btn-primary">Comment <i class="fas fa-comments"></i></a>
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        <a href="#" class="btn btn-sm btn-primary">Share <i class="fas fa-share"></i></a>
-                    </div>
-                </div>
-            </div>
-        <?php }
-     } ?>
 </div>
 <?php include("./includes/footer.php"); ?>

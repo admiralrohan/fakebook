@@ -16,7 +16,7 @@ if (! isset($_GET["id"])) {
     $own_id = (int) $_SESSION["user_id"];
     $friend_id = (int) $_GET["id"];
 
-    $query = "SELECT request_id from friend_requests where request_from = {$friend_id} && request_to = {$own_id} && request_status = 'pending'";
+    $query = "SELECT request_id from friend_requests where request_from = {$own_id} && request_to = {$friend_id} && request_status = 'pending'";
 
     $result = $db->query($query);
 
