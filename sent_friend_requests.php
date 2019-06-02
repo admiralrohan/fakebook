@@ -3,11 +3,11 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$title = $_SESSION["user_name"];
 if (! isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
 }
+$title = $_SESSION["fname"] . "'s Sent Friend Requests";
 
 $friends = array();
 

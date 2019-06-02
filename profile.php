@@ -3,7 +3,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$title = $_SESSION["user_name"];
 if (! isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
@@ -18,7 +17,7 @@ require_once("./utilities/connect_to_db.php");
 // Check if the provided id is valid, and fetch user's name
 if (! isset($_GET["id"])) {
     $profile_id = (int) $_SESSION["user_id"];
-    $profile_name = $_SESSION["user_name"];
+    $profile_name = $_SESSION["fullname"];
 } else {
     $id = (int) $_GET["id"];
     $query = "SELECT CONCAT(fname, ' ', lname) AS user_name from users where user_id = ?";
@@ -41,6 +40,7 @@ if (! isset($_GET["id"])) {
     }
 }
 
+$title = $profile_name;
 $is_own_profile = $profile_id == $_SESSION["user_id"];
 
 require_once("./classes/post.class.php");
@@ -62,71 +62,7 @@ include("./includes/posts_by_user.php");
 
     <?php if (! $is_own_profile) { ?>
         <div class="text-center mb-3">
-            <?php
-            // Add Friend
-            $q = "SELECT request_id from friend_requests where (request_from = {$own_id} && request_to = {$profile_id}) && (request_status = 'pending' || request_status = 'accepted') UNION
-            SELECT request_id from friend_requests where (request_from = {$profile_id} && request_to = {$own_id}) && (request_status = 'pending' || request_status = 'accepted')";
-            $result = $db->query($q);
-
-            if ($result->num_rows == 0) {
-            ?>
-            <span>
-                <a href="utilities/add_friend.php?id=<?= $profile_id ?>" class="btn btn-sm btn-primary">Add Friend <i class="fas fa-user-plus"></i></a>
-            </span>
-            <?php } ?>
-
-            <?php
-            // Friend
-            $q = "SELECT request_id from friend_requests where request_from = {$profile_id} && request_to = {$own_id} && request_status = 'accepted' UNION
-            SELECT request_id from friend_requests where request_to = {$profile_id} && request_from = {$own_id} && request_status = 'accepted'";
-            $result = $db->query($q);
-
-            if ($result->num_rows == 1) {
-            ?>
-            <span>
-                <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Friend <i class="fas fa-user-friends"></i>
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="utilities/unfriend.php?id=<?= $profile_id ?>">Unfriend</a>
-                </div>
-            </span>
-            <?php } ?>
-
-            <?php
-            // Friend request sent
-            $q = "SELECT request_id from friend_requests where request_to = {$profile_id} && request_from = {$own_id} && request_status = 'pending'";
-            $result = $db->query($q);
-
-            if ($result->num_rows) {
-            ?>
-            <span>
-                <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Friend Request Sent <i class="fas fa-user-friends"></i>
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="utilities/cancel_request.php?id=<?= $profile_id ?>">Cancel Request</a>
-                </div>
-            </span>
-            <?php } ?>
-
-            <?php
-            // Respond to friend request
-            $q = "SELECT request_id from friend_requests where request_from = {$profile_id} && request_to = {$own_id} && request_status = 'pending'";
-            $result = $db->query($q);
-
-            if ($result->num_rows) {
-            ?>
-            <span>
-                <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Respond to Friend Request <i class="fas fa-user-friends"></i>
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="utilities/confirm_request.php?id=<?= $profile_id ?>">Confirm</a>
-                    <a class="dropdown-item" href="utilities/delete_request.php?id=<?= $profile_id ?>">Delete Request</a>
-                </div>
-            </span>
-            <?php } ?>
+            <?php include_once("./includes/friendship_status.php"); ?>
 
             <span>
                 <a href="message.php?id=<?= $profile_id ?>" class="btn btn-sm btn-info">Message <i class="fas fa-envelope"></i></a>

@@ -1,6 +1,4 @@
 <?php
-$profile_id = (int) $_SESSION["user_id"];
-
 $query = "SELECT post_id, post_content, user_id AS post_owner_id, CONCAT(fname, ' ', lname) AS post_owner_name, posted_on
 FROM posts AS p INNER JOIN users AS u
 ON p.post_owner = u.user_id

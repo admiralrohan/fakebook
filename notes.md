@@ -131,4 +131,48 @@ Respond to friend request
 SELECT request_id from friend_requests where request_from = {$profile_id} && request_to = {$own_id} && request_status = 'pending'
 
 # Mutual Friend
+Must sent an user_id
+My friend list INTERSECT My friend's friend list
 
+SELECT value FROM table_a
+INTERSECT
+SELECT value FROM table_b
+
+(1, 2, 4, 5) ^ (2, 3, 4, 6) = (2, 3, 4)
+Select (1, 2, 4, 5) ^ (2, 3, 4, 6)
+
+SELECT value FROM table_a
+WHERE (value) IN
+(SELECT value FROM table_b);
+
+SELECT user_id, CONCAT(fname, ' ', lname) as user_name from users where user_id IN
+(SELECT request_from from friend_requests where request_to = {$profile_id} && request_status = 'accepted' UNION
+SELECT request_to from friend_requests where request_from = {$profile_id} && request_status = 'accepted') INTERSECT
+(SELECT request_from from friend_requests where request_to = {$friend_id} && request_status = 'accepted' UNION
+SELECT request_to from friend_requests where request_from = {$friend_id} && request_status = 'accepted')
+
+Make seperate file to show friendship status in Profile Page, which will be reused in Mutual friend page.
+
+2 => 13, 14
+13 => 2
+14 => 2
+So mutual friend of 13 and 14 is 2.
+
+# Search profiles (id is must)
+
+# Likes in post
+
+# Comments in post
+
+# Messages
+message.php?id=13 => message from Rohan to John
+INSERT into messages (msg_id, msg_content, msg_from, msg_to, msgd_on) VALUES (NULL, '$content', $own_id, $friend_id, NOW())
+
+class Message {
+    msg_id, msg_content, msg_from_id, msg_from_name, msg_to_id, msg_to_name, msgd_on
+}
+
+# Fetch conversations between two users
+Msgs sent from me to him + Msgs sent from him to me => sort them ASC
+
+SELECT msg_id, msg_content, msg_from, msg_to, msgd_on from messages where msg_from = {$own_id} && msg_to = {$friend_id} UNION SELECT msg_id, msg_content, msg_from, msg_to, msgd_on from messages where msg_from = {$friend_id} && msg_to = {$own_id}

@@ -36,8 +36,8 @@ function addActiveClass($page_name) {
       </li>
     </ul>
 
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <form class="form-inline my-2 my-lg-0" method="GET" action="search_results.php">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search_term" aria-label="Search">
       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
     </form>
   </div>

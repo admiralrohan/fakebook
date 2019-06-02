@@ -11,19 +11,20 @@ if (empty($password)) {
 
 if (empty($errors)) {
     try {
-        $query = "SELECT user_id, CONCAT(fname, ' ', lname) AS user_name, email, psword from users where email = ?";
+        $query = "SELECT user_id, fname, lname, email, psword from users where email = ?";
 
         $stmt = $db->stmt_init();
         $stmt->prepare($query);
         $stmt->bind_param('s', $email);
         $stmt->execute();
-        $stmt->bind_result($user_id, $user_name, $email_db, $password_db);
+        $stmt->bind_result($user_id, $fname, $lname, $email_db, $password_db);
         $stmt->fetch();
 
         if (password_verify($password, $password_db)) {
             session_start();
             $_SESSION['user_id'] = $user_id;
-            $_SESSION['user_name'] = $user_name;
+            $_SESSION['fname'] = $fname;
+            $_SESSION['fullname'] = "{$fname} {$lname}";
             $_SESSION['email'] = $email_db;
 
             $url = "timeline.php";
