@@ -19,7 +19,7 @@ require_once("./classes/post.class.php");
 
 include("./includes/header.php");
 include("./includes/nav.php");
-include("./includes/timeline_posts.php");
+include("./includes/fetch_timeline_posts.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require("./utilities/process_create_post.php");
@@ -48,29 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             It looks like there are no posts available to view at this moment.
         </div>
     <?php } else {
-            foreach ($posts as $post) {
-        ?>
-            <div class="card p-3 my-2">
-                <div class="card-title font-weight-bold">
-                    <a href="<?= "profile.php?id={$post->post_owner_id}" ?>"><?= $post->post_owner_name ?></a>
-                </div>
-                <div class="card-subtitle"><?= $post->posted_on ?></div>
-                <div class="card-text my-2"><?= nl2br(mb_substr($post->post_content, 0, 1000)) . "<br><br><a href='post.php?id={$post->post_id}'>See Full Story</a>" ?></div>
-
-                <hr>
-                <div class="row">
-                    <div class="col-sm-4 text-center">
-                        <a href="#" class="btn btn-sm btn-primary">Like <i class="fas fa-thumbs-up"></i></a>
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        <a href="#" class="btn btn-sm btn-primary">Comment <i class="fas fa-comments"></i></a>
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        <a href="#" class="btn btn-sm btn-primary">Share <i class="fas fa-share"></i></a>
-                    </div>
-                </div>
-            </div>
-        <?php }
-     } ?>
+        include("./includes/show_posts.php");
+    } ?>
 </div>
 <?php include("./includes/footer.php"); ?>

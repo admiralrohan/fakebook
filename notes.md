@@ -176,3 +176,14 @@ class Message {
 Msgs sent from me to him + Msgs sent from him to me => sort them ASC
 
 SELECT msg_id, msg_content, msg_from, msg_to, msgd_on from messages where msg_from = {$own_id} && msg_to = {$friend_id} UNION SELECT msg_id, msg_content, msg_from, msg_to, msgd_on from messages where msg_from = {$friend_id} && msg_to = {$own_id}
+
+
+# Next agenda: 20.06.19
+Like a post
+Fetch post liked by users
+Unlike a post (only for session_id)
+
+Comment on a post
+Fetch comments for a post
+Delete existing comment
+Can only delete own comment

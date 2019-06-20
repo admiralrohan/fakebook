@@ -12,7 +12,7 @@ $title = $_SESSION["fname"] . "'s Friend List";
 $friends = array();
 
 require_once("./utilities/connect_to_db.php");
-include("./classes/friend.class.php");
+include("./classes/user.class.php");
 include("./includes/header.php");
 include("./includes/nav.php");
 
@@ -24,7 +24,7 @@ SELECT request_to from friend_requests where request_from = {$profile_id} && req
 
 $result = $db->query($q);
 while ($row = $result->fetch_object()) {
-    $friends[] = new Friend($row->user_id, $row->user_name);
+    $friends[] = new User($row->user_id, $row->user_name);
 }
 ?>
 

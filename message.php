@@ -24,19 +24,18 @@ if (! isset($_GET["id"])) {
     $own_name = $_SESSION["fullname"];
     $friend_id = (int) $_GET["id"];
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        require("./utilities/process_create_message.php");
-    }
-
     // Check if this user_id exists
-    // $query = "SELECT CONCAT(fname, ' ', lname) AS user_name from users where user_id = {$friend_id}";
+    $query = "SELECT CONCAT(fname, ' ', lname) AS user_name from users where user_id = {$friend_id}";
 
-    // $result = $db->query($query);
-    // echo $db->error;
-    // if ($result->num_rows == 1) {
-        // $row = $result->fetch_object();
-        // $friend_name = $row->user_name;
-        $friend_name = "John Doe";
+    $result = $db->query($query);
+    echo $db->error;
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_object();
+        $friend_name = $row->user_name;
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            require("./utilities/process_create_message.php");
+        }
 
         $q = "SELECT msg_id, msg_content, msg_from, msg_to, msgd_on from messages where msg_from = {$own_id} && msg_to = {$friend_id} UNION SELECT msg_id, msg_content, msg_from, msg_to, msgd_on from messages where msg_from = {$friend_id} && msg_to = {$own_id}";
 
@@ -49,10 +48,10 @@ if (! isset($_GET["id"])) {
                 $messages[] = new Message($row->msg_id, $row->msg_content, $row->msg_from, $friend_name, $row->msg_to, $own_name, $row->msgd_on);
             }
         }
-    // } else {
-    //     header("Location: page_not_found.php");
-    //     exit();
-    // }
+    } else {
+        header("Location: page_not_found.php");
+        exit();
+    }
 }
 ?>
 
@@ -73,10 +72,11 @@ if (! isset($_GET["id"])) {
             <?php foreach ($messages as $message) { ?>
                 <div class="card-text">
                     <div>
-                        <div class="card-title font-weight-bold">
-                            <a href="profile.php?id=<?= $message->from_id ?>" ?><?= $message->from_name ?></a>
+                        <div class="card-title">
+                            <span class="font-weight-bold"><a href="profile.php?id=<?= $message->from_id ?>" ?><?= $message->from_name ?></a></span>
+                            <span class="float-lg-right"><?= $message->msgd_on ?></span>
                         </div>
-                        <div class="card-subtitle"><?= $message->msgd_on ?></div>
+                        <!-- <div class="card-subtitle"><?= $message->msgd_on ?></div> -->
                         <div class="card-text my-2"><?= nl2br($message->content) ?></div>
                     </div>
                 </div>

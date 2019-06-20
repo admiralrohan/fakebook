@@ -20,8 +20,6 @@ if (empty($errors)) {
         } else {
             $errors[] = $db->error;
         }
-
-        $db->close();
     } catch (Exception $e) {
         $errors[] = "Exception: " . $e;
     } catch (Error $e) {

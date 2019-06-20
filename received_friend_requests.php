@@ -12,7 +12,7 @@ $title = $_SESSION["fname"] . "'s Received Friend Requests";
 $friends = array();
 
 require_once("./utilities/connect_to_db.php");
-include("./classes/friend.class.php");
+include("./classes/user.class.php");
 include("./includes/header.php");
 include("./includes/nav.php");
 
@@ -22,7 +22,7 @@ $q = "SELECT user_id, CONCAT(fname, ' ', lname) as user_name from users where us
 $result = $db->query($q);
 
 while ($row = $result->fetch_object()) {
-    $friends[] = new Friend($row->user_id, $row->user_name);
+    $friends[] = new User($row->user_id, $row->user_name);
 }
 ?>
 

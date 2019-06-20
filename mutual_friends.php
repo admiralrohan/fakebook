@@ -12,52 +12,47 @@ if (! isset($_SESSION['user_id'])) {
 $friends = array();
 
 require_once("./utilities/connect_to_db.php");
-include("./classes/friend.class.php");
+include("./classes/user.class.php");
 include("./includes/header.php");
 include("./includes/nav.php");
+
+if (! isset($_GET["id"])) {
+    header("Location: profile.php");
+    exit();
+}
 
 $profile_id = (int) $_SESSION["user_id"];
 $friend_id = (int) $_GET["id"];
 
-$own_friend_list = array();
-$friends_friend_list = array();
-$mutual_friend_list = array();
-
-$q = "SELECT user_id from users where user_id IN
-(SELECT request_from from friend_requests where request_to = {$profile_id} && request_status = 'accepted' UNION
-SELECT request_to from friend_requests where request_from = {$profile_id} && request_status = 'accepted')";
-
-$result = $db->query($q);
-while ($row = $result->fetch_object()) {
-    $own_friend_list[] = $row->user_id;
+if ($profile_id === $friend_id) {
+    header("Location: profile.php");
+    exit();
 }
-// print_r($own_friend_list);
 
-$q = "SELECT user_id from users where user_id IN
-(SELECT request_from from friend_requests where request_to = {$friend_id} && request_status = 'accepted' UNION
-SELECT request_to from friend_requests where request_from = {$friend_id} && request_status = 'accepted')";
+// Check if this user_id exists
+$query = "SELECT fname from users where user_id = {$friend_id}";
 
-$result = $db->query($q);
-while ($row = $result->fetch_object()) {
-    $friends_friend_list[] = $row->user_id;
-}
-// print_r($friends_friend_list);
+$result = $db->query($query);
+echo $db->error;
+if ($result->num_rows == 1) {
+    $row = $result->fetch_object();
+    $friend_name = $row->fname;
 
-foreach($own_friend_list as $own_friend) {
-    foreach($friends_friend_list as $friends_friend) {
-        if ($own_friend == $friends_friend) {
-            $mutual_friend_list[] = $own_friend;
+    include("./includes/fetch_mutual_friend_count.php");
+
+    if (! empty($mutual_friend_list)) {
+        $ids = implode(", ", $mutual_friend_list);
+        $q = "SELECT user_id, CONCAT(fname, ' ', lname) as user_name from users where user_id IN ({$ids})";
+
+        $result = $db->query($q);
+        echo $db->error;
+        while ($row = $result->fetch_object()) {
+            $friends[] = new User($row->user_id, $row->user_name);
         }
     }
-}
-print_r($mutual_friend_list);
-
-$q = "SELECT user_id, CONCAT(fname, ' ', lname) as user_name from users where user_id IN {$mutual_friend_list}";
-
-$result = $db->query($q);
-echo $db->error;
-while ($row = $result->fetch_object()) {
-    $friends[] = new Friend($row->user_id, $row->user_name);
+} else {
+    header("Location: page_not_found.php");
+    exit();
 }
 ?>
 
@@ -69,16 +64,13 @@ while ($row = $result->fetch_object()) {
             </div>
             <hr>
             <div class="card-body">
-                <span>It looks like you don't have any mutual friend with <?= $friend_name ?>.</span>
+                <span>It looks like you don't have any mutual friend with <?= $friend_name ?></span>
             </div>
         </div>
     <?php } else { ?>
         <div class="card p-3 my-2">
-            <?php if (count($friends) == 1) { ?>
-            <div class="card-title font-weight-bold text-center"><?= count($friends) ?> Mutual Friend</div>
-            <?php } else { ?>
-            <div class="card-title font-weight-bold text-center"><?= count($friends) ?> Mutual Friends</div>
-            <?php } ?>
+            <div class="card-title font-weight-bold text-center"><?= count($friends) ?> Mutual Friend <?php echo count($friends) > 1 ? "s" : "" ?> with <?= $friend_name ?></div>
+
             <div class="card-subtitle text-center">
                 <a href="profile.php?id=<?= $friend_id ?>">Go back to friend's profile</a>
             </div>

@@ -52,8 +52,18 @@ include("./includes/nav.php");
         </div>
         <div class="card-subtitle"><?= $post->posted_on ?></div>
         <div class="card-text my-2"><?= nl2br($post->post_content) ?></div>
-        <hr>
 
+        <div class="mt-2">
+            <a href="post_liked_by.php?id=<?= $post->post_id ?>">
+                <span class="text-secondary">
+                    <?php echo count($mutual_friend_list) === 0 ? "No" : count($mutual_friend_list) ?> like
+                    <?php echo count($mutual_friend_list) > 1 ? "s" : "" ?>
+                    <?php echo count($mutual_friend_list) === 0 ? " yet" : "" ?>
+                </span>
+            </a>
+        </div>
+
+        <hr>
         <div class="row">
             <div class="col-sm-4 text-center">
                 <a href="#" class="btn btn-sm btn-primary">Like <i class="fas fa-thumbs-up"></i></a>

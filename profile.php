@@ -50,7 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 include("./includes/header.php");
 include("./includes/nav.php");
-include("./includes/posts_by_user.php");
+include("./includes/fetch_posts_by_user.php");
+if (! $is_own_profile) {
+    include("./includes/fetch_mutual_friend_count.php");
+}
 ?>
 
 <div class="w-50 my-3 vertical-center">
@@ -68,6 +71,16 @@ include("./includes/posts_by_user.php");
                 <a href="message.php?id=<?= $profile_id ?>" class="btn btn-sm btn-info">Message <i class="fas fa-envelope"></i></a>
             </span>
         </div>
+        <?php if (! $is_own_profile) { ?>
+            <div class="text-center mb-3">
+                <a href="mutual_friends.php?id=<?= $profile_id ?>">
+                    <span class="text-secondary">
+                        <?php echo count($mutual_friend_list) === 0 ? "No" : count($mutual_friend_list) ?> mutual friend
+                        <?php echo count($mutual_friend_list) > 1 ? "s" : "" ?>
+                    </span>
+                </a>
+            </div>
+        <?php } ?>
     <?php } ?>
 
     <?php if ($is_own_profile) { ?>
@@ -90,29 +103,7 @@ include("./includes/posts_by_user.php");
             It looks like there are no posts available to view at this moment.
         </div>
     <?php } else {
-            foreach ($posts as $post) {
-        ?>
-            <div class="card p-3 my-2">
-                <div class="card-title font-weight-bold">
-                    <a href="<?= "profile.php?id={$post->post_owner_id}" ?>"><?= $post->post_owner_name ?></a>
-                </div>
-                <div class="card-subtitle"><?= $post->posted_on ?></div>
-                <div class="card-text my-2"><?= nl2br(mb_substr($post->post_content, 0, 1000)) . "<br><br><a href='post.php?id={$post->post_id}'>See Full Story</a>" ?></div>
-
-                <hr>
-                <div class="row">
-                    <div class="col-sm-4 text-center">
-                        <a href="#" class="btn btn-sm btn-primary">Like <i class="fas fa-thumbs-up"></i></a>
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        <a href="#" class="btn btn-sm btn-primary">Comment <i class="fas fa-comments"></i></a>
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        <a href="#" class="btn btn-sm btn-primary">Share <i class="fas fa-share"></i></a>
-                    </div>
-                </div>
-            </div>
-        <?php }
-     } ?>
+        include("./includes/show_posts.php");
+    } ?>
 </div>
 <?php include("./includes/footer.php"); ?>

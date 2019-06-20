@@ -11,7 +11,7 @@ if (! isset($_SESSION['user_id'])) {
 $users = array();
 
 require_once("./utilities/connect_to_db.php");
-include("./classes/friend.class.php");
+include("./classes/user.class.php");
 include("./includes/header.php");
 include("./includes/nav.php");
 
@@ -31,7 +31,7 @@ if (! isset($_GET["search_term"])) {
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_object()) {
-                $users[] = new Friend($row->user_id, $row->user_name);
+                $users[] = new User($row->user_id, $row->user_name);
             }
         }
     } else {
