@@ -44,6 +44,7 @@ $title = $profile_name;
 $is_own_profile = $profile_id == $_SESSION["user_id"];
 
 require_once("./classes/post.class.php");
+require_once("./classes/user.class.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require("./utilities/process_create_post.php");
 }
@@ -71,16 +72,14 @@ if (! $is_own_profile) {
                 <a href="message.php?id=<?= $profile_id ?>" class="btn btn-sm btn-info">Message <i class="fas fa-envelope"></i></a>
             </span>
         </div>
-        <?php if (! $is_own_profile) { ?>
-            <div class="text-center mb-3">
-                <a href="mutual_friends.php?id=<?= $profile_id ?>">
-                    <span class="text-secondary">
-                        <?php echo count($mutual_friend_list) === 0 ? "No" : count($mutual_friend_list) ?> mutual friend
-                        <?php echo count($mutual_friend_list) > 1 ? "s" : "" ?>
-                    </span>
-                </a>
-            </div>
-        <?php } ?>
+        <div class="text-center mb-3">
+            <a href="mutual_friends.php?id=<?= $profile_id ?>">
+                <span class="text-secondary">
+                    <?php echo count($mutual_friend_list) === 0 ? "No" : count($mutual_friend_list) ?> mutual friend
+                    <?php echo count($mutual_friend_list) > 1 ? "s" : "" ?>
+                </span>
+            </a>
+        </div>
     <?php } ?>
 
     <?php if ($is_own_profile) { ?>

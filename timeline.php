@@ -16,6 +16,7 @@ $posts = array();
 
 require_once("./utilities/connect_to_db.php");
 require_once("./classes/post.class.php");
+require_once("./classes/user.class.php");
 
 include("./includes/header.php");
 include("./includes/nav.php");

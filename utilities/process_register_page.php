@@ -31,8 +31,7 @@ if (empty($errors)) {
     try {
         $query = "INSERT into users (user_id, fname, lname, email, psword, registered_on) ";
         $query .= "VALUES (NULL, ?, ?, ?, ?, NOW())";
-        // $query .= "VALUES (NULL, '$fname', '$lname', '$email', '$hashed_password', NOW() )";
-        // $result = $db->query($query);
+
         $stmt = $db->stmt_init();
         $stmt->prepare($query);
         $stmt->bind_param('ssss', $fname, $lname, $email, $hashed_password);
