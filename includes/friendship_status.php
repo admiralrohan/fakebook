@@ -20,7 +20,7 @@ $result = $db->query($q);
 if ($result->num_rows == 1) {
 ?>
 <span>
-    <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="btn btn-sm btn-success dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Friend <i class="fas fa-user-friends"></i>
     </a>
     <div class="dropdown-menu">
@@ -37,7 +37,7 @@ $result = $db->query($q);
 if ($result->num_rows) {
 ?>
 <span>
-    <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="btn btn-sm btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Friend Request Sent <i class="fas fa-user-friends"></i>
     </a>
     <div class="dropdown-menu">

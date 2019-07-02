@@ -9,12 +9,13 @@ if (! isset($_SESSION['user_id'])) {
 }
 $title = $_SESSION["fname"] . "'s Friend List";
 
-$friends = array();
+$friends = [];
 
 require_once("./utilities/connect_to_db.php");
 include("./classes/user.class.php");
 include("./includes/header.php");
 include("./includes/nav.php");
+include_once("./includes/generic_functions.php");
 
 $profile_id = (int) $_SESSION["user_id"];
 
@@ -41,7 +42,9 @@ while ($row = $result->fetch_object()) {
         </div>
     <?php } else { ?>
         <div class="card p-3 my-2">
-            <div class="card-title font-weight-bold text-center"><?= count($friends) ?> Friends</div>
+            <div class="card-title font-weight-bold text-center">
+                <?= print_array_count($friends, "friend") ?>
+            </div>
             <div class="card-subtitle text-center">
                 <a href="received_friend_requests.php">View Received Requests</a>
             </div>

@@ -1,5 +1,5 @@
 <?php
-$content = filter_var($_POST["msg_content"], FILTER_SANITIZE_STRING);
+$content = filter_var($_POST["message"], FILTER_SANITIZE_STRING);
 
 if (empty($content)) {
     $errors[] = "You have to write something to message";
@@ -16,13 +16,13 @@ if (empty($errors)) {
         echo $db->error;
 
         if ($stmt->affected_rows == 1) {
-            $success[] = "Your post has sent successfully.";
+            $success[] = "Your message has sent successfully.";
         } else {
             $errors[] = $db->error;
         }
     } catch (Exception $e) {
-        $errors[] = "Exception: " . $e;
+        $errors[] = $e;
     } catch (Error $e) {
-        $errors[] = "Error: " . $e;
+        $errors[] = $e;
     }
 }

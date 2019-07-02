@@ -3,7 +3,7 @@ function post_liked_by_users($db, $id) {
     $liked_users = [];
 
     $q = "SELECT user_id, CONCAT(fname, ' ', lname) as user_name from users where user_id IN
-    (SELECT post_liked_by from post_liked_by_users where post_id = {$id})";
+    (SELECT post_liked_by from post_liked_by_users where post_id = {$id} ORDER BY post_liked_on DESC)";
     $result = $db->query($q);
 
     while ($row = $result->fetch_object()) {

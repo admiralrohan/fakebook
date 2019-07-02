@@ -12,7 +12,6 @@ $profile_id = (int) $_SESSION["user_id"];
 
 $success = array();
 $errors = array();
-$posts = array();
 
 require_once("./utilities/connect_to_db.php");
 require_once("./classes/post.class.php");
@@ -20,7 +19,9 @@ require_once("./classes/user.class.php");
 
 include("./includes/header.php");
 include("./includes/nav.php");
+
 include("./includes/fetch_timeline_posts.php");
+$posts = timeline_posts($db, $profile_id);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require("./utilities/process_create_post.php");
@@ -40,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <textarea class="form-control" id="post_content" rows="5" name="post_content" placeholder="Write something here..."></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary mb-2">Share Post</button>
+            <button type="submit" class="btn btn-primary btn-sm mb-2">Share Post</button>
         </form>
     </div>
 

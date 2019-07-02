@@ -10,7 +10,6 @@ if (! isset($_SESSION['user_id'])) {
 
 $success = array();
 $errors = array();
-$posts = array();
 
 require_once("./utilities/connect_to_db.php");
 
@@ -45,15 +44,21 @@ $is_own_profile = $profile_id == $_SESSION["user_id"];
 
 require_once("./classes/post.class.php");
 require_once("./classes/user.class.php");
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require("./utilities/process_create_post.php");
 }
 
-include("./includes/header.php");
-include("./includes/nav.php");
-include("./includes/fetch_posts_by_user.php");
+require_once("./includes/header.php");
+require_once("./includes/nav.php");
+include_once("./includes/generic_functions.php");
+
+require_once("./includes/fetch_posts_by_user.php");
+$posts = posts_by_user($db, $profile_id);
+
 if (! $is_own_profile) {
     include("./includes/fetch_mutual_friend_count.php");
+    $mutual_friends = mutual_friends($db, $own_id, $profile_id);
 }
 ?>
 
@@ -75,8 +80,7 @@ if (! $is_own_profile) {
         <div class="text-center mb-3">
             <a href="mutual_friends.php?id=<?= $profile_id ?>">
                 <span class="text-secondary">
-                    <?php echo count($mutual_friend_list) === 0 ? "No" : count($mutual_friend_list) ?> mutual friend
-                    <?php echo count($mutual_friend_list) > 1 ? "s" : "" ?>
+                    <?= print_array_count($mutual_friends, "mutual friend", false) ?>
                 </span>
             </a>
         </div>
@@ -92,7 +96,7 @@ if (! $is_own_profile) {
                     <textarea class="form-control" id="post_content" rows="5" name="post_content" placeholder="Write something here..."></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary mb-2">Share Post</button>
+                <button type="submit" class="btn btn-primary btn-sm mb-2">Share Post</button>
             </form>
         </div>
     <?php } ?>

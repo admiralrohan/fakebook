@@ -7,14 +7,11 @@ if (! isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
 }
-$title = $_SESSION["fname"] . "'s Friend List";
 
-$messages = array();
+$messages = [];
 
 require_once("./utilities/connect_to_db.php");
 include("./classes/message.class.php");
-include("./includes/header.php");
-include("./includes/nav.php");
 
 if (! isset($_GET["id"])) {
     header("Location: profile.php");
@@ -28,10 +25,11 @@ if (! isset($_GET["id"])) {
     $query = "SELECT CONCAT(fname, ' ', lname) AS user_name from users where user_id = {$friend_id}";
 
     $result = $db->query($query);
-    echo $db->error;
     if ($result->num_rows == 1) {
         $row = $result->fetch_object();
         $friend_name = $row->user_name;
+
+        $title = "Chat with {$friend_name}";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             require("./utilities/process_create_message.php");
@@ -40,7 +38,6 @@ if (! isset($_GET["id"])) {
         $q = "SELECT msg_id, msg_content, msg_from, msg_to, msgd_on from messages where msg_from = {$own_id} && msg_to = {$friend_id} UNION SELECT msg_id, msg_content, msg_from, msg_to, msgd_on from messages where msg_from = {$friend_id} && msg_to = {$own_id}";
 
         $result = $db->query($q);
-        echo $db->error;
         while ($row = $result->fetch_object()) {
             if ($row->msg_from == $own_id) {
                 $messages[] = new Message($row->msg_id, $row->msg_content, $row->msg_from, $own_name, $row->msg_to, $friend_name, $row->msgd_on);
@@ -53,6 +50,10 @@ if (! isset($_GET["id"])) {
         exit();
     }
 }
+
+include("./includes/header.php");
+include("./includes/nav.php");
+include_once("./includes/generic_functions.php");
 ?>
 
 <div class="w-50 my-3 vertical-center">
@@ -65,18 +66,17 @@ if (! isset($_GET["id"])) {
             </div>
         </div>
     <?php } else { ?>
-        <div class="card-title font-weight-bold text-center"><?= count($messages) ?> Messages</div>
+        <div class="card-title font-weight-bold text-center"><?= print_array_count($messages, "message") ?></div>
         <hr>
 
-        <div class="card-body">
+        <div class="card-body" id="message-body">
             <?php foreach ($messages as $message) { ?>
                 <div class="card-text">
                     <div>
                         <div class="card-title">
-                            <span class="font-weight-bold"><a href="profile.php?id=<?= $message->from_id ?>" ?><?= $message->from_name ?></a></span>
-                            <span class="float-lg-right"><?= $message->msgd_on ?></span>
+                            <span class="font-weight-bold"><a href="profile.php?id=<?= $message->from->id ?>" ?><?= $message->from->name ?></a></span>
+                            <span class="float-lg-right"><?= $message->time ?></span>
                         </div>
-                        <!-- <div class="card-subtitle"><?= $message->msgd_on ?></div> -->
                         <div class="card-text my-2"><?= nl2br($message->content) ?></div>
                     </div>
                 </div>
@@ -86,11 +86,20 @@ if (! isset($_GET["id"])) {
     <?php } ?>
 
         <div class="card-footer">
-            <form class="form-inline my-2 my-lg-0" method="POST" action="message.php?id=<?= $friend_id ?>">
-                <input class="form-control mr-sm-2" type="text" placeholder="Write something..." name="msg_content" aria-label="Message Content">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Message</button>
+            <form id="message-form" method="POST" action="message.php?id=<?= $friend_id ?>">
+                <input class="form-control form-control-sm" type="text" id="message" placeholder="Type your message..." name="message" aria-label="Message">
             </form>
         </div>
     </div>
 </div>
 <?php include("./includes/footer.php"); ?>
+<script>
+    $(document).ready(function() {
+        $("#message").keypress(function (e) {
+            if (e.which == 13) {
+                $("form#message-form").submit();
+                return false;
+            }
+        });
+    });
+</script>

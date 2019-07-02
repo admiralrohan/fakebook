@@ -9,10 +9,9 @@ if (! isset($_SESSION['user_id'])) {
     exit();
 }
 
-$friends = array();
-
 require_once("./utilities/connect_to_db.php");
 include("./classes/user.class.php");
+
 include("./includes/header.php");
 include("./includes/nav.php");
 
@@ -38,18 +37,8 @@ if ($result->num_rows == 1) {
     $row = $result->fetch_object();
     $friend_name = $row->fname;
 
-    include("./includes/fetch_mutual_friend_count.php");
-
-    if (! empty($mutual_friend_list)) {
-        $ids = implode(", ", $mutual_friend_list);
-        $q = "SELECT user_id, CONCAT(fname, ' ', lname) as user_name from users where user_id IN ({$ids})";
-
-        $result = $db->query($q);
-        echo $db->error;
-        while ($row = $result->fetch_object()) {
-            $friends[] = new User($row->user_id, $row->user_name);
-        }
-    }
+    require("./includes/fetch_mutual_friend_count.php");
+    $mutual_friends = mutual_friends($db, $profile_id, $friend_id);
 } else {
     header("Location: page_not_found.php");
     exit();
@@ -57,7 +46,7 @@ if ($result->num_rows == 1) {
 ?>
 
 <div class="w-50 my-3 vertical-center">
-    <?php if (empty($friends)) { ?>
+    <?php if (empty($mutual_friends)) { ?>
         <div class="card p-3 my-2">
             <div class="card-title text-center my-0">
                 <a href="profile.php?id=<?= $friend_id ?>">Back to Friend's Profile</a>
@@ -69,7 +58,7 @@ if ($result->num_rows == 1) {
         </div>
     <?php } else { ?>
         <div class="card p-3 my-2">
-            <div class="card-title font-weight-bold text-center"><?= count($friends) ?> Mutual Friend <?php echo count($friends) > 1 ? "s" : "" ?> with <?= $friend_name ?></div>
+            <div class="card-title font-weight-bold text-center"><?= count($mutual_friends) ?> Mutual Friend <?php echo count($mutual_friends) > 1 ? "s" : "" ?> with <?= $friend_name ?></div>
 
             <div class="card-subtitle text-center">
                 <a href="profile.php?id=<?= $friend_id ?>">Go back to friend's profile</a>
@@ -77,14 +66,14 @@ if ($result->num_rows == 1) {
             <hr>
 
             <div class="card-body">
-                <?php foreach ($friends as $friend) { ?>
+                <?php foreach ($mutual_friends as $mutual_friend) { ?>
                     <div class="card-text row">
                         <div class="col-sm-8 text-left">
-                            <a href="profile.php?id=<?= $friend->id ?>" ?><?= $friend->name ?></a>
+                            <a href="profile.php?id=<?= $mutual_friend->id ?>" ?><?= $mutual_friend->name ?></a>
                         </div>
 
                         <div class="col-sm-4 text-right">
-                            <a href="./utilities/unfriend.php?id=<?= $friend->id ?>" class="btn btn-sm btn-secondary">Unfriend</a>
+                            <a href="./utilities/unfriend.php?id=<?= $mutual_friend->id ?>" class="btn btn-sm btn-secondary">Unfriend</a>
                         </div>
                     </div>
                     <hr>

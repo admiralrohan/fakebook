@@ -5,6 +5,8 @@ includes => all view files which are not used as standalone view file but to be 
 utilities => doesn't have any view associated with it but do some action between views
 other files in the root => main view files
 
+fetch files in /includes are PHP functions while fetch files in /utilities are AJAX calls
+
 # Timeline
 post_content => post_content of form
 post_owner => $_SESSION["user_id"]
@@ -187,3 +189,75 @@ Comment on a post
 Fetch comments for a post
 Delete existing comment
 Can only delete own comment
+
+# comments
+comment_id, comment_content, post_id (posts), comment_owner (users), commented_on
+
+SELECT comment_id, comment_content, comment_owner as comment_owner_id, CONCAT(fname, ' ', lname) as comment_owner_name commented_on from comments as c INNER JOIN users as u ON c.comment_owner = u.user_id where post_id = 4
+
+# Inbox
+Need to find all messages where $profile_id is associated
+Create new associate array User => Message
+
+# Next tasks 30.06.19
+Share Posts DONE
+Edit Post (Own)
+Delete Post (Own)
+Edit Comment (Own)
+Delete Comment (Own)
+Copying single post page functionalities into timeline and individual profile pages (i.e like count, modal)
+Inbox
+All users (Find friends)
+Add edit and delete button for own posts DONE
+Disable edit and delete button for comments of other users
+Disable edit and delete button for posts of other users DONE
+Like comment
+
+shared_posts => will refer to another post
+shared_post_id, shared_post_content, original_post (id => foreign key), shared_post_owner, post_shared_on
+If someone else shared a shared post, then that post will refer to the original post always
+
+add original_post column in posts table, which will be null for original posts
+
+Suppose user 2 shared post 4 of user 13 => post id 45 => original post id 4
+user 14 shared post 45 => post id 47 => original post id 4
+
+share a post logic =>
+suppose I want to share post 4 => is post 4 shared post => no, so original post id = 4 => new post id 45
+suppose I want to share post 45 => is post 45 shared post => yes, so original post id = original post id of post 45 = 4
+
+# Next ideas
+Group
+Page
+Tag friends to post
+Tag friends in comment
+Add Feelings to post
+Share on your timeline (Default + completed) / friend's timeline / group / page you manage / share in private message
+Notifications
+Post privacy settings
+
+# Database trigger for Create Post
+if is_shared_post = false, post_content can't be null
+
+New post created splash message
+
+# Adding ajax for post operations
+Each card represents a post, on which we will call each operation without refreshing the page or redirecting anywhere
+Timeline and profile page has N posts, individual post pages have 1 post
+
+# Post operations
+Like post
+Comment on post
+Share post
+Edit post
+Delete post (with a modal)
+Comment like, edit, delete
+
+Each post have "post-4" id
+comment-17 id
+and id value as data property
+
+When a action button is clicked, we will track the parent post/comment div and it's id from data attribute
+Then send ajax call to the server with that id
+it will return updated content after making the operation
+and we will replace the element wrt the id
