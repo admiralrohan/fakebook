@@ -3,7 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if (! isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
 }
@@ -60,8 +60,8 @@ while ($row = $result->fetch_object()) {
                     <hr>
                 <?php } ?>
             </div>
-            </div>
         </div>
-    <?php } ?>
+    </div>
+<?php } ?>
 </div>
 <?php include("./includes/footer.php"); ?>

@@ -3,7 +3,12 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if (! isset($_SESSION['user_id'])) {
+ini_set('display_errors', 'On');
+ini_set('html_errors', 1);
+error_reporting(-1);
+
+
+if (!isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
 }
@@ -16,6 +21,7 @@ $errors = array();
 require_once("./utilities/connect_to_db.php");
 require_once("./classes/post.class.php");
 require_once("./classes/user.class.php");
+require_once("./classes/comment.class.php");
 
 include("./includes/header.php");
 include("./includes/nav.php");
@@ -54,3 +60,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } ?>
 </div>
 <?php include("./includes/footer.php"); ?>
+<script src="assets/js/post-actions.js"></script>

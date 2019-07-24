@@ -1,5 +1,6 @@
 <?php
-function post_liked_by_users($db, $id) {
+function post_liked_by_users($db, $id)
+{
     $liked_users = [];
 
     $q = "SELECT user_id, CONCAT(fname, ' ', lname) as user_name from users where user_id IN

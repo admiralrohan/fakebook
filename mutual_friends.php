@@ -4,7 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $title = $_SESSION["user_name"];
-if (! isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
 }
@@ -15,7 +15,7 @@ include("./classes/user.class.php");
 include("./includes/header.php");
 include("./includes/nav.php");
 
-if (! isset($_GET["id"])) {
+if (!isset($_GET["id"])) {
     header("Location: profile.php");
     exit();
 }
@@ -79,8 +79,8 @@ if ($result->num_rows == 1) {
                     <hr>
                 <?php } ?>
             </div>
-            </div>
         </div>
-    <?php } ?>
+    </div>
+<?php } ?>
 </div>
 <?php include("./includes/footer.php"); ?>

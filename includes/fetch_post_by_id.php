@@ -1,20 +1,17 @@
 <?php
-function timeline_posts($db, $user_id)
+function post_by_id($db, $post_id)
 {
-    $posts = [];
+    $query = "SELECT post_id, post_content, u.user_id AS post_owner_id, p.original_post as original_post_id, CONCAT(fname, ' ', lname) AS post_owner_name, posted_on, p.is_shared_post ";
+    $query .= "FROM posts AS p INNER JOIN users AS u ";
+    $query .= "ON p.post_owner = u.user_id ";
+    $query .= "WHERE p.post_id = '$post_id' ";
 
-    $query = "SELECT post_id, post_content, u.user_id AS post_owner_id, p.original_post as original_post_id, CONCAT(fname, ' ', lname) AS post_owner_name, posted_on, p.is_shared_post
-    FROM posts AS p INNER JOIN users AS u
-    ON p.post_owner = u.user_id
-    WHERE p.post_owner IN
-    (SELECT request_from from friend_requests where request_to = {$user_id} && request_status = 'accepted' UNION
-    SELECT request_to from friend_requests where request_from = {$user_id} && request_status = 'accepted')
-    ORDER BY p.posted_on DESC";
+    $result = $db->query($query);
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_object();
 
-    $result_outer_query = $db->query($query);
-    while ($row = $result_outer_query->fetch_object()) {
         if (!$row->is_shared_post) {
-            $posts[] = new Post(
+            $post = new Post(
                 $row->post_id,
                 $row->post_content,
                 $row->post_owner_id,
@@ -36,7 +33,7 @@ function timeline_posts($db, $user_id)
                     $new_row = $result->fetch_object();
 
                     if (!$new_row->is_shared_post) {
-                        $posts[] = new Post(
+                        $post = new Post(
                             $row->post_id,
                             $row->post_content,
                             $row->post_owner_id,
@@ -60,7 +57,7 @@ function timeline_posts($db, $user_id)
                     exit();
                 }
             } else { // Original post has been deleted
-                $posts[] = new Post(
+                $post = new Post(
                     $row->post_id,
                     $row->post_content,
                     $row->post_owner_id,
@@ -71,7 +68,10 @@ function timeline_posts($db, $user_id)
                 );
             }
         }
+    } else {
+        header("Location: page_not_found.php");
+        exit();
     }
 
-    return $posts;
+    return $post;
 }

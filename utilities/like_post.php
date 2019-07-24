@@ -3,7 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if (! isset($_SESSION["user_id"])) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: index.php?from=none");
     exit();
 }
@@ -11,7 +11,7 @@ if (! isset($_SESSION["user_id"])) {
 require_once("./connect_to_db.php");
 
 // Is post id present
-if (! isset($_GET["id"])) {
+if (!isset($_GET["id"])) {
     header("Location: ./../profile.php");
 } else {
     $profile_id = (int) $_SESSION["user_id"];

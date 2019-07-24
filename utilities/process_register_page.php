@@ -12,7 +12,7 @@ if (empty($lname)) {
 }
 
 $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-if (empty($email) || (! filter_var($email, FILTER_VALIDATE_EMAIL))) {
+if (empty($email) || (!filter_var($email, FILTER_VALIDATE_EMAIL))) {
     $errors[] = "You forgot to enter your email address or the email format is incorrect.";
 }
 

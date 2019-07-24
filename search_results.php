@@ -3,7 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if (! isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
 }
@@ -18,7 +18,7 @@ include("./includes/nav.php");
 $error_msg = "No profile found with your search result.";
 
 // Check if any search term is specified
-if (! isset($_GET["search_term"])) {
+if (!isset($_GET["search_term"])) {
     header("Location: profile.php");
     exit();
 } else {
@@ -74,8 +74,8 @@ $title = "Search Results";
                     <hr>
                 <?php } ?>
             </div>
-            </div>
         </div>
-    <?php } ?>
+    </div>
+<?php } ?>
 </div>
 <?php include("./includes/footer.php"); ?>

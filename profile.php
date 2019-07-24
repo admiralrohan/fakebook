@@ -3,7 +3,11 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if (! isset($_SESSION['user_id'])) {
+ini_set('display_errors', 'On');
+ini_set('html_errors', 1);
+error_reporting(-1);
+
+if (!isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
 }
@@ -14,7 +18,7 @@ $errors = array();
 require_once("./utilities/connect_to_db.php");
 
 // Check if the provided id is valid, and fetch user's name
-if (! isset($_GET["id"])) {
+if (!isset($_GET["id"])) {
     $profile_id = (int) $_SESSION["user_id"];
     $profile_name = $_SESSION["fullname"];
 } else {
@@ -44,6 +48,7 @@ $is_own_profile = $profile_id == $_SESSION["user_id"];
 
 require_once("./classes/post.class.php");
 require_once("./classes/user.class.php");
+require_once("./classes/comment.class.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require("./utilities/process_create_post.php");
@@ -56,20 +61,20 @@ include_once("./includes/generic_functions.php");
 require_once("./includes/fetch_posts_by_user.php");
 $posts = posts_by_user($db, $profile_id);
 
-if (! $is_own_profile) {
+if (!$is_own_profile) {
     include("./includes/fetch_mutual_friend_count.php");
     $mutual_friends = mutual_friends($db, $own_id, $profile_id);
 }
 ?>
 
 <div class="w-50 my-3 vertical-center">
-    <?php if (! $is_own_profile) { ?>
+    <?php if (!$is_own_profile) { ?>
         <div class="text-center font-weight-bold mb-2"><?= $profile_name ?></div>
     <?php } else { ?>
         <div class="text-center font-weight-bold mb-3"><?= $profile_name ?></div>
     <?php } ?>
 
-    <?php if (! $is_own_profile) { ?>
+    <?php if (!$is_own_profile) { ?>
         <div class="text-center mb-3">
             <?php include_once("./includes/friendship_status.php"); ?>
 
@@ -110,3 +115,4 @@ if (! $is_own_profile) {
     } ?>
 </div>
 <?php include("./includes/footer.php"); ?>
+<script src="assets/js/post-actions.js"></script>

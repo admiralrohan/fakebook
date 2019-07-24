@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . "/user.class.php");
 
-class Comment {
+class Comment
+{
     public $id;
     public $content;
     public $post_id;
@@ -15,7 +16,7 @@ class Comment {
         int $owner_id,
         string $owner_name,
         string $commented_on
-        ) {
+    ) {
         $this->id = $id;
         $this->content = $content;
         $this->post_id = $post_id;
