@@ -1,5 +1,5 @@
 <?php
-function comments_by_post($db, $post_id)
+function comments_by_post(mysqli $db, int $post_id): array
 {
     $comments = [];
 

@@ -1,5 +1,5 @@
 <?php
-function posts_by_user($db, $user_id)
+function posts_by_user(mysqli $db, int $user_id): array
 {
     $posts = [];
 

@@ -44,10 +44,8 @@ include("./includes/nav.php");
     <?= load_post($db, $post, $own_id) ?>
 </div>
 
-<?php //include("./includes/modal_liked_users.php");
-?>
-<?php //include("./includes/modal_shared_posts.php");
-?>
+<?php include("./includes/modal_liked_users.php"); ?>
+<?php include("./includes/modal_share_post.php"); ?>
 
 <?php include("./includes/footer.php"); ?>
-<script src="assets/js/post-actions.js"></script>
+<script src="assets/js/postActions.js"></script>

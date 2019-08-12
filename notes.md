@@ -128,21 +128,21 @@ Select post_id, post_content, post_owner as post_owner_id, CONCAT(fname, ' ', ln
 
 4 options in profile page:
 
-Add friend
+Add friend = 1
 If he is not friend already / if no request has been sent already from either side
 
 SELECT request_id from friend_requests where (request_from = {$own_id} && request_to = {$profile_id}) && (request_status = 'pending' || request_status = 'accepted') UNION
 SELECT request_id from friend_requests where (request_from = {$profile_id} && request_to = {$own_id}) && (request_status = 'pending' || request_status = 'accepted')
 If no result returned
 
-Friend
+Friend = 2
 SELECT request_id from friend_requests where request_from = {$profile_id} && request_to = {$own_id} && request_status = 'accepted' UNION
 SELECT request_id from friend_requests where request_to = {$profile_id} && request_from = {$own_id} && request_status = 'accepted'
 
-Friend request sent
+Friend request sent = 3
 SELECT request_id from friend_requests where request_to = {$profile_id} && request_from = {$own_id} && request_status = 'pending'
 
-Respond to friend request
+Respond to friend request = 4
 SELECT request_id from friend_requests where request_from = {$profile_id} && request_to = {$own_id} && request_status = 'pending'
 
 # Mutual Friend
@@ -308,3 +308,19 @@ load_comment($comment, $post, \$own_id)
 <div class="card-text my-2"><?= nl2br(mb_substr($post->content, 0, 1000)) . "<br><br><a href='post.php?id={$post->id}'>See Full Story</a>" ?></div>
 
 .vertical-center => mx-auto
+
+# Like post clicked
+
+Fetch post id from card data value
+
+let titleLikes = document
+.getElementById(`post-${id}`)
+.getElementsByClassName("like-count")[0].dataset.originalTitle;
+
+# Open modal when .like-count clicked
+
+when .like-count clicked
+load data for the corresponding post in the modal
+open modal
+
+Add created_at and updated_at columns into comments and posts table

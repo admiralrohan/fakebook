@@ -1,9 +1,9 @@
 <?php
 function mutual_friends($db, $own_id, $friend_id)
 {
-    $own_friend_list = array();
-    $friends_friend_list = array();
-    $mutual_friend_list = array();
+    $own_friend_list = [];
+    $friends_friend_list = [];
+    $mutual_friend_list = [];
     $mutual_friends = [];
 
     $q = "SELECT user_id from users where user_id IN

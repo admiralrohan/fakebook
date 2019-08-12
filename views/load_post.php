@@ -4,7 +4,7 @@ $is_post_liked_by_user = is_post_liked_by_user($db, $post->id, $own_id);
 $comments = comments_by_post($db, $post->id);
 ?>
 
-<div class="card my-2">
+<div class="card my-2" id="post-<?= $post->id ?>" data-id="<?= $post->id ?>">
     <div class="card-header">
         <?php if ($own_id == $post->owner->id) { ?>
             <div class="float-right">
@@ -12,8 +12,8 @@ $comments = comments_by_post($db, $post->id);
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="edit-delete-Button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="edit-delete-button">
-                        <a class="dropdown-item edit-comment" href="#">Edit Post</a>
-                        <a class="dropdown-item delete-comment" href="#">Delete Post</a>
+                        <a class="dropdown-item edit-post" href="#">Edit Post</a>
+                        <a class="dropdown-item delete-post" href="#">Delete Post</a>
                     </div>
                 </div>
             </div>
@@ -57,10 +57,7 @@ $comments = comments_by_post($db, $post->id);
 
         <div class="row mt-2">
             <div class="col-6 text-left">
-                <a href="#" class="like-count" data-toggle="tooltip" data-html="true" data-placement="bottom" title="
-                <?php foreach ($post_liked_by_users as $liked_user) {
-                    echo "<span>{$liked_user->name}<span><br>";
-                } ?>" data-likes=<?= count($post_liked_by_users) ?>>
+                <a href="#" class="like-count" data-toggle="tooltip" data-html="true" data-placement="bottom" title="<?php foreach ($post_liked_by_users as $liked_user) echo "<span data-id='{$liked_user->id}' data-status='{$liked_user->friendshipStatus}'>{$liked_user->name}</span><br>"; ?>" data-likes=<?= count($post_liked_by_users) ?>>
                     <span class="text-secondary">
                         <?= print_array_count($post_liked_by_users, "like") ?>
                     </span>
@@ -79,34 +76,31 @@ $comments = comments_by_post($db, $post->id);
         <hr>
         <div class="row">
             <div class="col-12 col-sm-4 text-center">
-                <a href="utilities/<?php echo $is_post_liked_by_user ? 'dis' : '' ?>like_post.php?id=<?= $post->id ?>" class="btn btn-sm <?php echo $is_post_liked_by_user ? 'btn-primary' : 'btn-outline-primary' ?> like-post">Like <i class="fas fa-thumbs-up"></i></a>
+                <a href="#" class="btn btn-sm <?= $is_post_liked_by_user ? 'btn-primary' : 'btn-outline-primary' ?> like-post" data-is-liked="<?= $is_post_liked_by_user ?>">Like <i class="fas fa-thumbs-up"></i></a>
             </div>
             <div class="w-100 my-1 d-sm-none"></div>
+
             <div class="col-12 col-sm-4 text-center">
                 <a href="#" class="btn btn-sm btn-outline-primary comment-post" id="comment-link">Comment <i class="fas fa-comments"></i></a>
             </div>
             <div class="w-100 my-1 d-sm-none"></div>
+
             <div class="col-12 col-sm-4 text-center">
-                <a href="utilities/share_post.php?id=<?= $post->id ?>" class="btn btn-sm btn-outline-primary share-post" id="share-button">Share <i class="fas fa-share"></i></a>
+                <a href="#" class="btn btn-sm btn-outline-primary share-post" id="share-button">Share <i class="fas fa-share"></i></a>
             </div>
         </div>
 
         <hr>
         <div class="my-1">
-            <form method="POST" action="utilities/post_comment.php" id="comment-form">
-                <div class="form-group">
-                    <input type="text" class="form-control form-control-sm" id="comment-input" placeholder="Write a comment..." name="comment" value="<?= isset($_POST["comment"]) ? $_POST["comment"] : '' ?>" required>
-                </div>
-                <div class="form-group">
-                    <input type="hidden" class="form-control form-control-sm" name="postId" value="<?= $post->id ?>">
-                </div>
-            </form>
+            <div class="form-group">
+                <textarea type="text" class="form-control form-control-sm comment-input" rows="1" placeholder="Write a comment..." name="comment" required><?= isset($_POST["comment"]) ? $_POST["comment"] : '' ?></textarea>
+            </div>
         </div>
 
         <!-- Show Comments -->
-        <div>
+        <div class="comments">
             <?php foreach ($comments as $comment) {
-                echo load_comment($db, $comment, $post, $own_id);
+                echo load_comment($db, $comment, $own_id);
             } ?>
         </div>
     </div>

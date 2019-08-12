@@ -29,7 +29,7 @@ while ($row = $result->fetch_object()) {
 }
 ?>
 
-<div class="w-50 my-3 vertical-center">
+<div id="container" class="mx-auto my-3">
     <?php if (empty($friends)) { ?>
         <div class="card p-3 my-2">
             <div class="card-title text-center my-0">

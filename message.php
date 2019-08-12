@@ -56,7 +56,7 @@ include("./includes/nav.php");
 include_once("./includes/generic_functions.php");
 ?>
 
-<div class="w-50 my-3 vertical-center">
+<div id="container" class="mx-auto my-3">
     <div class="text-center font-weight-bold mb-2"><?= $friend_name ?></div>
 
     <div class="card p-3 my-2">

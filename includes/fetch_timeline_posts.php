@@ -1,5 +1,5 @@
 <?php
-function timeline_posts($db, $user_id)
+function timeline_posts(mysqli $db, int $user_id): array
 {
     $posts = [];
 

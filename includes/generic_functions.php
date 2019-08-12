@@ -28,9 +28,79 @@ function load_post($db, $post, $own_id)
     return ob_get_clean();
 }
 
-function load_comment($db, $comment, $post, $own_id)
+function load_comment($db, $comment, $own_id)
 {
     ob_start();
     require(__DIR__ . "/../views/load_comment.php");
+    return ob_get_clean();
+}
+
+function load_comment_without_like($comment, $own_id)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_comment_without_like.php");
+    return ob_get_clean();
+}
+
+function load_button_add_friend($profile_id, $friendship_status_code)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_button_add_friend.php");
+    return ob_get_clean();
+}
+
+function load_button_friend($profile_id, $friendship_status_code)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_button_friend.php");
+    return ob_get_clean();
+}
+
+function load_button_friend_request_sent($profile_id, $friendship_status_code)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_button_friend_request_sent.php");
+    return ob_get_clean();
+}
+
+function load_button_respond_to_friend_request($profile_id, $friendship_status_code)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_button_respond_to_friend_request.php");
+    return ob_get_clean();
+}
+
+function load_class_like_count($post_liked_by_users)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_class_like_count.php");
+    return ob_get_clean();
+}
+
+function load_button_like_post($is_post_liked_by_user)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_button_like_post.php");
+    return ob_get_clean();
+}
+
+function load_modal_liked_users_header($post_liked_by_users)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_modal_liked_users_header.php");
+    return ob_get_clean();
+}
+
+function load_modal_liked_users_body($post_liked_by_users)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_modal_liked_users_body.php");
+    return ob_get_clean();
+}
+
+function load_modal_share_post_body($post)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_modal_share_post_body.php");
     return ob_get_clean();
 }

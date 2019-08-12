@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$users = array();
+$users = [];
 
 require_once("./utilities/connect_to_db.php");
 include("./classes/user.class.php");

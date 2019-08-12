@@ -1,6 +1,4 @@
 <?php
-// $comment_liked_by_users = comment_liked_by_users($db, $comment->id);
-// $is_comment_liked_by_user = is_comment_liked_by_user($db, $comment->id, $own_id);
 $is_comment_liked_by_user = false;
 ?>
 
@@ -16,8 +14,6 @@ $is_comment_liked_by_user = false;
         <span>
             <a href="#" class="<?php echo $is_comment_liked_by_user ? 'text-primary' : 'text-secondary' ?> like-comment">Like</a>
         </span>
-        <!-- <span class="badge badge-pill badge-primary">1</span> -->
-        <!-- <span class="badge badge-pill badge-primary"><?= count($comment_liked_by_users) ?></span> -->
 
         <?php if ($own_id == $comment->owner->id) { ?>
             <span>

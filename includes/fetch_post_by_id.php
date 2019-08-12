@@ -1,5 +1,5 @@
 <?php
-function post_by_id($db, $post_id)
+function post_by_id(mysqli $db, int $post_id): Post
 {
     $query = "SELECT post_id, post_content, u.user_id AS post_owner_id, p.original_post as original_post_id, CONCAT(fname, ' ', lname) AS post_owner_name, posted_on, p.is_shared_post ";
     $query .= "FROM posts AS p INNER JOIN users AS u ";

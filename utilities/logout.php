@@ -9,7 +9,7 @@ if (session_status() == PHP_SESSION_NONE) {
 // exit();
 // } else {
 // echo session_id()." 2nd";
-$_SESSION = array();
+$_SESSION = [];
 
 if (ini_get("session.use_cookies")) {
     // echo session_id()." 3nd";

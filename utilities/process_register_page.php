@@ -1,5 +1,5 @@
 <?php
-$errors = array();
+$errors = [];
 
 $fname = filter_var($_POST['fname'], FILTER_SANITIZE_STRING);
 if (empty($fname)) {
