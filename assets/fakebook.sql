@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 24, 2019 at 11:38 AM
--- Server version: 5.7.26-0ubuntu0.18.04.1
+-- Generation Time: Aug 12, 2019 at 03:09 PM
+-- Server version: 5.7.27-0ubuntu0.18.04.1
 -- PHP Version: 7.2.19-0ubuntu0.18.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -39,16 +39,26 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`comment_id`, `comment_content`, `post_id`, `comment_owner`, `commented_on`) VALUES
-(1, 'First comment', 25, 2, '2019-06-25 00:45:49'),
-(2, 'Hello', 25, 2, '2019-06-25 22:55:08'),
-(3, 'Dfe', 25, 2, '2019-06-25 23:08:49'),
-(4, 'First comment', 25, 2, '2019-06-25 23:10:47'),
+(3, 'DFB Pokal winner', 25, 2, '2019-06-25 23:08:49'),
+(4, 'First comment posted again', 25, 2, '2019-06-25 23:10:47'),
 (5, 'Hello', 25, 13, '2019-06-27 04:21:18'),
 (6, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 25, 13, '2019-06-27 04:49:58'),
 (8, 'Cool post', 43, 2, '2019-07-01 03:23:20'),
 (9, 'Cool post', 7, 13, '2019-07-05 02:38:33'),
 (10, 'Cool post', 4, 13, '2019-07-05 08:02:54'),
-(11, 'Hi', 47, 2, '2019-07-24 11:24:47');
+(11, 'Hi there', 47, 2, '2019-07-24 11:24:47'),
+(12, 'Test comment', 5, 2, '2019-08-03 02:55:30'),
+(13, 'First comment', 26, 2, '2019-08-03 03:38:25'),
+(14, 'Ho', 86, 2, '2019-08-09 15:01:53'),
+(15, 'Hi there', 67, 2, '2019-08-12 10:05:14'),
+(23, 'Hi', 25, 2, '2019-08-12 14:08:43'),
+(24, 'Hellooo', 25, 2, '2019-08-12 14:09:40'),
+(25, 'Hellooo', 25, 2, '2019-08-12 14:11:07'),
+(28, 'Hello', 25, 2, '2019-08-12 14:20:52'),
+(29, 'Extra', 25, 2, '2019-08-12 14:22:17'),
+(31, 'Hello', 46, 2, '2019-08-12 14:25:30'),
+(32, 'Hi', 45, 2, '2019-08-12 14:25:41'),
+(33, 'Hi', 24, 2, '2019-08-12 14:28:37');
 
 -- --------------------------------------------------------
 
@@ -112,7 +122,8 @@ INSERT INTO `messages` (`msg_id`, `msg_content`, `msg_from`, `msg_to`, `msgd_on`
 (10, 'Dfg', 2, 13, '2019-06-16 00:09:26'),
 (11, 'd', 2, 13, '2019-06-16 00:09:40'),
 (12, 'Hi', 14, 2, '2019-06-27 01:15:50'),
-(13, 'Next message', 14, 2, '2019-06-27 01:38:24');
+(13, 'Next message', 14, 2, '2019-06-27 01:38:24'),
+(14, 'Hi', 2, 13, '2019-08-12 14:37:54');
 
 -- --------------------------------------------------------
 
@@ -159,19 +170,26 @@ INSERT INTO `posts` (`post_id`, `post_content`, `original_post`, `post_owner`, `
 (46, 'Dummy shared post content', NULL, 13, '2019-07-01 04:32:00', 1),
 (47, 'Say hi to me', 4, 13, '2019-07-01 05:49:26', 1),
 (67, 'New post', NULL, 13, '2019-07-01 22:16:45', 0),
-(68, '', 4, 2, '2019-07-24 11:25:00', 1);
+(81, '', 16, 2, '2019-08-09 12:25:15', 1),
+(82, '', 16, 2, '2019-08-09 12:29:44', 1),
+(83, 'Hello', 25, 2, '2019-08-09 14:59:54', 1),
+(84, 'New share', 25, 2, '2019-08-09 15:00:33', 1),
+(85, 'Another one', 25, 2, '2019-08-09 15:01:22', 1),
+(86, 'Df', 25, 2, '2019-08-09 15:01:31', 1),
+(87, '', NULL, 2, '2019-08-09 15:05:44', 1),
+(88, '', NULL, 2, '2019-08-09 15:05:53', 1);
 
 --
 -- Triggers `posts`
 --
-DELIMITER $$
-CREATE TRIGGER `posts_before_insert` BEFORE INSERT ON `posts` FOR EACH ROW IF (NEW.post_content IS NULL) && (NEW.is_shared_post = 0)
-THEN
-   SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Cannot insert empty post';
-END IF
-$$
-DELIMITER ;
+-- DELIMITER $$
+-- CREATE TRIGGER `posts_before_insert` BEFORE INSERT ON `posts` FOR EACH ROW IF (NEW.post_content IS NULL) && (NEW.is_shared_post = 0)
+-- THEN
+--    SIGNAL SQLSTATE '45000'
+--         SET MESSAGE_TEXT = 'Cannot insert empty post';
+-- END IF
+-- $$
+-- DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -190,22 +208,32 @@ CREATE TABLE `post_liked_by_users` (
 --
 
 INSERT INTO `post_liked_by_users` (`post_id`, `post_liked_by`, `post_liked_on`) VALUES
+(1, 2, '2019-08-06 03:08:05'),
 (4, 2, '2019-06-26 04:07:28'),
 (4, 13, '2019-07-06 04:23:56'),
 (4, 14, '2019-06-20 05:09:50'),
-(5, 2, '2019-06-26 05:15:35'),
+(5, 2, '2019-08-03 02:59:15'),
 (7, 13, '2019-07-05 02:32:23'),
-(17, 2, '2019-06-21 13:35:54'),
-(19, 2, '2019-06-21 13:38:37'),
-(22, 2, '2019-06-22 03:09:04'),
+(16, 2, '2019-08-06 04:17:27'),
+(17, 2, '2019-08-06 04:02:21'),
+(18, 2, '2019-08-12 14:28:54'),
+(19, 2, '2019-08-06 03:07:55'),
+(22, 2, '2019-08-06 02:58:42'),
 (22, 13, '2019-06-24 01:50:30'),
 (22, 14, '2019-06-24 01:44:23'),
+(24, 2, '2019-08-06 03:58:46'),
 (24, 13, '2019-07-06 05:31:39'),
-(25, 2, '2019-07-24 09:15:06'),
+(25, 2, '2019-08-09 14:59:40'),
 (25, 13, '2019-07-02 03:01:39'),
-(43, 2, '2019-07-01 03:18:43'),
-(47, 2, '2019-07-24 11:24:39'),
-(68, 2, '2019-07-24 11:26:56');
+(26, 2, '2019-08-06 03:11:13'),
+(43, 2, '2019-08-03 04:10:20'),
+(44, 2, '2019-08-06 04:02:38'),
+(45, 2, '2019-08-06 02:40:00'),
+(46, 2, '2019-08-06 03:12:45'),
+(47, 2, '2019-08-06 04:27:00'),
+(67, 2, '2019-08-12 10:05:36'),
+(86, 2, '2019-08-09 15:01:46'),
+(87, 2, '2019-08-12 15:01:31');
 
 -- --------------------------------------------------------
 
@@ -289,7 +317,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(14) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `comment_id` int(14) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `friend_requests`
 --
@@ -299,12 +327,12 @@ ALTER TABLE `friend_requests`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `msg_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `msg_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `post_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 --
 -- AUTO_INCREMENT for table `users`
 --
