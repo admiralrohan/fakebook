@@ -1,12 +1,13 @@
 <?php
-function addActiveClass($page_name) {
-  if(basename($_SERVER["PHP_SELF"]) == $page_name) {
+function addActiveClass($page_name)
+{
+  if (basename($_SERVER["PHP_SELF"]) == $page_name) {
     echo "active";
   }
 }
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-md navbar-light sticky-top bg-light">
   <a class="navbar-brand font-weight-bold logo" href="index.php">Fakebook</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -17,6 +18,7 @@ function addActiveClass($page_name) {
       <li class="nav-item <?= addActiveClass("profile.php") ?>">
         <a class="nav-link" href="profile.php">Profile</span></a>
       </li>
+
       <li class="nav-item dropdown <?= addActiveClass("received_friend_requests.php") ?>">
         <a class="nav-link dropdown-toggle" href="received_friend_requests.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Friends
@@ -28,9 +30,11 @@ function addActiveClass($page_name) {
           <a class="dropdown-item" href="friend_list.php">Friend List</a>
         </div>
       </li>
+
       <li class="nav-item <?= addActiveClass("inbox.php") ?>">
         <a class="nav-link" href="inbox.php">Inbox</a>
       </li>
+
       <li class="nav-item">
         <a class="nav-link" href="./utilities/logout.php">Logout</a>
       </li>
@@ -42,3 +46,4 @@ function addActiveClass($page_name) {
     </form>
   </div>
 </nav>
+<main role="main" class="container-fluid">

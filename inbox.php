@@ -3,7 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if (! isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
 }
@@ -29,7 +29,12 @@ while ($row = $result->fetch_object()) {
 }
 ?>
 
-<div class="w-50 my-3 vertical-center">
+<div id="container" class="mx-auto my-3">
+    <div class="card p-3 my-2">
+        This page isn't completed yet! But you can message individual users by going to user's profile page and there is a link to message them directly.
+    </div>
+</div>
+<div class="d-none">
     <?php if (empty($friends)) { ?>
         <div class="card p-3 my-2">
             <div class="card-title text-center my-0">
@@ -49,32 +54,34 @@ while ($row = $result->fetch_object()) {
             <hr>
 
             <div class="card-body">
-                <?php //foreach ($friends as $friend) { ?>
-                    <div class="card-text row">
-                        <div class="col-sm-8 text-left">
-                            <a href="profile.php?id=2" ?>Rohan Gayen</a>
-                        </div>
-
-                        <div class="col-sm-4 text-right">
-                            <a href="message.php?id=<?= $friend->id ?>" class="btn btn-sm btn-info">Message</a>
-                            <a href="./utilities/unfriend.php?id=<?= $friend->id ?>" class="btn btn-sm btn-secondary">Unfriend</a>
-                        </div>
+                <?php //foreach ($friends as $friend) {
+                ?>
+                <div class="card-text row">
+                    <div class="col-sm-8 text-left">
+                        <a href="profile.php?id=2" ?>Rohan Gayen</a>
                     </div>
-                    <!-- <div class="card-text row">
-                        <div class="col-sm-8 text-left">
-                            <a href="profile.php?id=<?= $friend->id ?>" ?><?= $friend->name ?></a>
-                        </div>
 
-                        <div class="col-sm-4 text-right">
-                            <a href="message.php?id=<?= $friend->id ?>" class="btn btn-sm btn-info">Message</a>
-                            <a href="./utilities/unfriend.php?id=<?= $friend->id ?>" class="btn btn-sm btn-secondary">Unfriend</a>
-                        </div>
-                    </div> -->
-                    <hr>
-                <?php //} ?>
-            </div>
+                    <div class="col-sm-4 text-right">
+                        <a href="message.php?id=<?= $friend->id ?>" class="btn btn-sm btn-info">Message</a>
+                        <a href="./utilities/unfriend.php?id=<?= $friend->id ?>" class="btn btn-sm btn-secondary">Unfriend</a>
+                    </div>
+                </div>
+                <!-- <div class="card-text row">
+                                                    <div class="col-sm-8 text-left">
+                                                        <a href="profile.php?id=<?= $friend->id ?>" ?><?= $friend->name ?></a>
+                                                    </div>
+
+                                                    <div class="col-sm-4 text-right">
+                                                        <a href="message.php?id=<?= $friend->id ?>" class="btn btn-sm btn-info">Message</a>
+                                                        <a href="./utilities/unfriend.php?id=<?= $friend->id ?>" class="btn btn-sm btn-secondary">Unfriend</a>
+                                                    </div>
+                                                </div> -->
+                <hr>
+                <?php //}
+                ?>
             </div>
         </div>
-    <?php } ?>
+    </div>
+<?php } ?>
 </div>
 <?php include("./includes/footer.php"); ?>

@@ -3,14 +3,14 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if (! isset($_SESSION["user_id"])) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: index.php?from=none");
     exit();
 }
 
 require_once("./connect_to_db.php");
 
-if (! isset($_GET["id"])) {
+if (!isset($_GET["id"])) {
     header("Location: ./../profile.php");
 } else {
     $own_id = (int) $_SESSION["user_id"];

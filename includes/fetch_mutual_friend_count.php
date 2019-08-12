@@ -1,8 +1,9 @@
 <?php
-function mutual_friends($db, $own_id, $friend_id) {
-    $own_friend_list = array();
-    $friends_friend_list = array();
-    $mutual_friend_list = array();
+function mutual_friends($db, $own_id, $friend_id)
+{
+    $own_friend_list = [];
+    $friends_friend_list = [];
+    $mutual_friend_list = [];
     $mutual_friends = [];
 
     $q = "SELECT user_id from users where user_id IN
@@ -23,15 +24,15 @@ function mutual_friends($db, $own_id, $friend_id) {
         $friends_friend_list[] = $row->user_id;
     }
 
-    foreach($own_friend_list as $own_friend) {
-        foreach($friends_friend_list as $friends_friend) {
+    foreach ($own_friend_list as $own_friend) {
+        foreach ($friends_friend_list as $friends_friend) {
             if ($own_friend == $friends_friend) {
                 $mutual_friend_list[] = $own_friend;
             }
         }
     }
 
-    if (! empty($mutual_friend_list)) {
+    if (!empty($mutual_friend_list)) {
         $ids = implode(", ", $mutual_friend_list);
         $q = "SELECT user_id, CONCAT(fname, ' ', lname) as user_name from users where user_id IN ({$ids})";
 

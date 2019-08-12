@@ -3,7 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if (! isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
 }
@@ -29,7 +29,7 @@ while ($row = $result->fetch_object()) {
 }
 ?>
 
-<div class="w-50 my-3 vertical-center">
+<div id="container" class="mx-auto my-3">
     <?php if (empty($friends)) { ?>
         <div class="card p-3 my-2">
             <div class="card-title text-center my-0">
@@ -66,8 +66,8 @@ while ($row = $result->fetch_object()) {
                     <hr>
                 <?php } ?>
             </div>
-            </div>
         </div>
-    <?php } ?>
+    </div>
+<?php } ?>
 </div>
 <?php include("./includes/footer.php"); ?>

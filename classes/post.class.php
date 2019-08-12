@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . "/user.class.php");
 
-class Post {
+class Post
+{
     public $id;
     public $content;
     public $owner;
@@ -17,7 +18,7 @@ class Post {
         string $posted_on,
         Post $originalPost = null,
         bool $isSharedPost = false
-        ) {
+    ) {
         $this->id = $id;
         $this->content = $content;
         $this->owner = new User($owner_id, $owner_name);

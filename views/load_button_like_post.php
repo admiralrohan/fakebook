@@ -1,0 +1,1 @@
+<a href="#" class="btn btn-sm <?= $is_post_liked_by_user ? 'btn-primary' : 'btn-outline-primary' ?> like-post" data-is-liked="<?= $is_post_liked_by_user ?>">Like <i class="fas fa-thumbs-up"></i></a>

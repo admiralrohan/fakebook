@@ -8,15 +8,13 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
-$success = array();
-$errors = array();
+$success = [];
+$errors = [];
 
 require_once("./utilities/connect_to_db.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require("./utilities/process_login_page.php");
 }
-// print_r($_GET);
-// print_r($_SESSION);
 if (isset($_GET["from"])) {
     if ($_GET["from"] === "none") {
         $errors[] = "Login first to access restricted pages.";
@@ -31,27 +29,30 @@ if (isset($_GET["from"])) {
 ?>
 
 <?php include("./includes/header.php"); ?>
-<div class="card w-50 p-4 my-5 vertical-center">
-    <div class="card-title text-center font-weight-bold logo">Fakebook</div>
-    <div class="card-subtitle text-center h6">Login into your account</div>
-    <div class="card-body">
-        <?php include("./includes/show_success.php"); ?>
-        <?php include("./includes/show_errors.php"); ?>
+<?php include("./includes/open_main_tag.php"); ?>
+<div id="container" class="mx-auto my-5">
+    <div class="card p-4">
+        <div class="card-title text-center font-weight-bold logo">Fakebook</div>
+        <div class="card-subtitle text-center h6">Login into your account</div>
+        <div class="card-body">
+            <?php include("./includes/show_success.php"); ?>
+            <?php include("./includes/show_errors.php"); ?>
 
-        <form method="POST" action="index.php">
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control form-control-sm" id="email" placeholder="Enter email" name="email" value="<?= $_POST["email"] ?>">
+            <form method="POST" action="index.php">
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control form-control-sm" id="email" placeholder="Enter email" name="email" value="<?= $_POST["email"] ?>">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control form-control-sm" id="password" placeholder="Password" name="password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            </form>
+            <br>
+            <div>
+                Don't have a account yet? <a href="register.php">Register Here</a>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control form-control-sm" id="password" placeholder="Password" name="password">
-            </div>
-            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-        </form>
-        <br>
-        <div>
-            Don't have a account yet? <a href="register.php">Register Here</a>
         </div>
     </div>
 </div>

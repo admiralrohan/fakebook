@@ -1,5 +1,6 @@
 <?php
-function comments_by_post($db, $post_id) {
+function comments_by_post(mysqli $db, int $post_id): array
+{
     $comments = [];
 
     $query = "SELECT comment_id, comment_content, c.post_id, comment_owner as comment_owner_id, CONCAT(fname, ' ', lname) as comment_owner_name, commented_on

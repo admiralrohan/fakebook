@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . "/user.class.php");
 
-class Message {
+class Message
+{
     public $id;
     public $content;
     public $from;
@@ -16,7 +17,7 @@ class Message {
         int $msg_to_id,
         string $msg_to_name,
         string $msgd_on
-        ) {
+    ) {
         $this->id = $msg_id;
         $this->content = $msg_content;
         $this->from = new User($msg_from_id, $msg_from_name);

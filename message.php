@@ -3,7 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if (! isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: index.php?from=none");
     exit();
 }
@@ -13,7 +13,7 @@ $messages = [];
 require_once("./utilities/connect_to_db.php");
 include("./classes/message.class.php");
 
-if (! isset($_GET["id"])) {
+if (!isset($_GET["id"])) {
     header("Location: profile.php");
     exit();
 } else {
@@ -56,7 +56,7 @@ include("./includes/nav.php");
 include_once("./includes/generic_functions.php");
 ?>
 
-<div class="w-50 my-3 vertical-center">
+<div id="container" class="mx-auto my-3">
     <div class="text-center font-weight-bold mb-2"><?= $friend_name ?></div>
 
     <div class="card p-3 my-2">
@@ -85,17 +85,17 @@ include_once("./includes/generic_functions.php");
         </div>
     <?php } ?>
 
-        <div class="card-footer">
-            <form id="message-form" method="POST" action="message.php?id=<?= $friend_id ?>">
-                <input class="form-control form-control-sm" type="text" id="message" placeholder="Type your message..." name="message" aria-label="Message">
-            </form>
-        </div>
+    <div class="card-footer">
+        <form id="message-form" method="POST" action="message.php?id=<?= $friend_id ?>">
+            <input class="form-control form-control-sm" type="text" id="message" placeholder="Type your message..." name="message" aria-label="Message">
+        </form>
     </div>
+</div>
 </div>
 <?php include("./includes/footer.php"); ?>
 <script>
     $(document).ready(function() {
-        $("#message").keypress(function (e) {
+        $("#message").keypress(function(e) {
             if (e.which == 13) {
                 $("form#message-form").submit();
                 return false;
