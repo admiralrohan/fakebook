@@ -1,0 +1,3 @@
+<span class="badge badge-pill badge-primary comment-like-count<?= count($comment_liked_by_users) === 0 ? ' d-none' : '' ?>" data-toggle="tooltip" data-html="true" data-placement="bottom" title="<?php foreach ($comment_liked_by_users as $liked_user) echo "<span data-id='{$liked_user["id"]}' data-status='{$liked_user["friendshipStatus"]}'>{$liked_user["name"]}</span><br>"; ?>" data-likes=<?= count($comment_liked_by_users) ?>>
+    <?= count($comment_liked_by_users) ?>
+</span>

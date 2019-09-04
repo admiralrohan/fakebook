@@ -73,6 +73,9 @@ if (!$is_own_profile) {
 require_once("./includes/fetch_post_liked_by_users.php");
 require_once("./includes/fetch_is_post_liked_by_user.php");
 require_once("./includes/fetch_comments_by_post.php");
+
+require_once("./includes/fetch_comment_liked_by_users.php");
+require_once("./includes/fetch_is_comment_liked_by_user.php");
 ?>
 
 <div id="container" class="mx-auto my-3">

@@ -18,7 +18,7 @@ $users = isset($_POST["users"]) ? $_POST["users"] : [];
 
 $res = array_merge($res, ["success" => true]);
 $res = array_merge($res, ["msg" => "Content fetched successfully"]);
-$res = array_merge($res, ["content" => load_class_like_count($users)]);
+$res = array_merge($res, ["content" => load_class_like_count_post($users)]);
 
 echo json_encode($res);
 exit();

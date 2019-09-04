@@ -53,12 +53,12 @@ while ($row = $result->fetch_object()) {
             <div class="card-body">
                 <?php foreach ($friends as $friend) { ?>
                     <div class="card-text row">
-                        <div class="col-sm-8 text-left">
+                        <div class="col-8 text-left">
                             <a href="profile.php?id=<?= $friend->id ?>" ?><?= $friend->name ?></a>
                             <!-- <span>1 mutual friend</span> -->
                         </div>
 
-                        <div class="col-sm-4 text-right">
+                        <div class="col-4 text-right">
                             <a href="message.php?id=<?= $friend->id ?>" class="btn btn-sm btn-info">Message</a>
                             <a href="./utilities/unfriend.php?id=<?= $friend->id ?>" class="btn btn-sm btn-secondary">Unfriend</a>
                         </div>
@@ -67,7 +67,7 @@ while ($row = $result->fetch_object()) {
                 <?php } ?>
             </div>
         </div>
-    </div>
-<?php } ?>
+        <!-- </div> -->
+    <?php } ?>
 </div>
 <?php include("./includes/footer.php"); ?>

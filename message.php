@@ -64,39 +64,39 @@ include_once("./includes/generic_functions.php");
             <div class="card-body text-center">
                 <span>Send HI to <?= $friend_name ?>!</span>
             </div>
-        </div>
-    <?php } else { ?>
-        <div class="card-title font-weight-bold text-center"><?= print_array_count($messages, "message") ?></div>
-        <hr>
-
-        <div class="card-body" id="message-body">
-            <?php foreach ($messages as $message) { ?>
-                <div class="card-text">
-                    <div>
-                        <div class="card-title">
-                            <span class="font-weight-bold"><a href="profile.php?id=<?= $message->from->id ?>" ?><?= $message->from->name ?></a></span>
-                            <span class="float-lg-right"><?= $message->time ?></span>
-                        </div>
-                        <div class="card-text my-2"><?= nl2br($message->content) ?></div>
-                    </div>
-                </div>
-                <hr>
-            <?php } ?>
-        </div>
-    <?php } ?>
-
-    <div class="card-footer">
-        <form id="message-form" method="POST" action="message.php?id=<?= $friend_id ?>">
-            <input class="form-control form-control-sm" type="text" id="message" placeholder="Type your message..." name="message" aria-label="Message">
-        </form>
     </div>
+<?php } else { ?>
+    <div class="card-title font-weight-bold text-center"><?= print_array_count($messages, "message") ?></div>
+    <hr>
+
+    <div class="card-body" id="message-body">
+        <?php foreach ($messages as $message) { ?>
+            <div class="card-text">
+                <div>
+                    <div class="card-title">
+                        <span class="font-weight-bold"><a href="profile.php?id=<?= $message->from->id ?>" ?><?= $message->from->name ?></a></span>
+                        <span class="float-lg-right"><?= $message->time ?></span>
+                    </div>
+                    <div class="card-text my-2"><?= nl2br($message->content) ?></div>
+                </div>
+            </div>
+            <hr>
+        <?php } ?>
+    </div>
+<?php } ?>
+
+<div class="card-footer">
+    <form id="message-form" method="POST" action="message.php?id=<?= $friend_id ?>">
+        <input class="form-control form-control-sm" type="text" id="message" placeholder="Type your message..." name="message" aria-label="Message">
+    </form>
+</div>
 </div>
 </div>
 <?php include("./includes/footer.php"); ?>
 <script>
     $(document).ready(function() {
         $("#message").keypress(function(e) {
-            if (e.which == 13) {
+            if (e.key === "Enter" && !e.shiftKey) {
                 $("form#message-form").submit();
                 return false;
             }

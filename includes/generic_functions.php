@@ -21,6 +21,7 @@ function get_date_for_database(string $date): string
     return $date_formated;
 }
 
+// Post and comment pages
 function load_post($db, $post, $own_id)
 {
     ob_start();
@@ -42,6 +43,7 @@ function load_comment_without_like($comment, $own_id)
     return ob_get_clean();
 }
 
+// Friendship buttons
 function load_button_add_friend($profile_id, $friendship_status_code)
 {
     ob_start();
@@ -70,10 +72,11 @@ function load_button_respond_to_friend_request($profile_id, $friendship_status_c
     return ob_get_clean();
 }
 
-function load_class_like_count($post_liked_by_users)
+// Post actions
+function load_class_like_count_post($post_liked_by_users)
 {
     ob_start();
-    require(__DIR__ . "/../views/load_class_like_count.php");
+    require(__DIR__ . "/../views/load_class_like_count_post.php");
     return ob_get_clean();
 }
 
@@ -102,5 +105,20 @@ function load_modal_share_post_body($post)
 {
     ob_start();
     require(__DIR__ . "/../views/load_modal_share_post_body.php");
+    return ob_get_clean();
+}
+
+// Comment actions
+function load_class_like_count_comment($comment_liked_by_users)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_class_like_count_comment.php");
+    return ob_get_clean();
+}
+
+function load_button_like_comment($is_comment_liked_by_user)
+{
+    ob_start();
+    require(__DIR__ . "/../views/load_button_like_comment.php");
     return ob_get_clean();
 }

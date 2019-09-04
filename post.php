@@ -24,6 +24,9 @@ require_once("./includes/fetch_post_liked_by_users.php");
 require_once("./includes/fetch_is_post_liked_by_user.php");
 require_once("./includes/fetch_comments_by_post.php");
 
+require_once("./includes/fetch_comment_liked_by_users.php");
+require_once("./includes/fetch_is_comment_liked_by_user.php");
+
 // Check if post_id exists and if exists then if the provided id is valid
 if (!isset($_GET["id"])) {
     header("Location: page_not_found.php");

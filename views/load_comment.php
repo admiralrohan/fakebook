@@ -1,7 +1,6 @@
 <?php
-// $comment_liked_by_users = comment_liked_by_users($db, $comment->id);
-// $is_comment_liked_by_user = is_comment_liked_by_user($db, $comment->id, $own_id);
-$is_comment_liked_by_user = false;
+$comment_liked_by_users = comment_liked_by_users($db, $comment->id);
+$is_comment_liked_by_user = is_comment_liked_by_user($db, $comment->id, $own_id);
 ?>
 
 <div id="comment-<?= $comment->id ?>" class="comment" data-id="<?= $comment->id ?>">
@@ -14,10 +13,12 @@ $is_comment_liked_by_user = false;
 
     <div class="comment-actions">
         <span>
-            <a href="#" class="<?php echo $is_comment_liked_by_user ? 'text-primary' : 'text-secondary' ?> like-comment">Like</a>
+            <a href="#" class="<?= $is_comment_liked_by_user ? 'text-primary' : 'text-secondary' ?> like-comment" data-is-liked="<?= $is_comment_liked_by_user ?>">Like</a>
         </span>
-        <!-- <span class="badge badge-pill badge-primary">1</span> -->
-        <!-- <span class="badge badge-pill badge-primary"><?= count($comment_liked_by_users) ?></span> -->
+
+        <span class="badge badge-pill badge-primary comment-like-count<?= count($comment_liked_by_users) === 0 ? ' d-none' : '' ?>" data-toggle="tooltip" data-html="true" data-placement="bottom" title="<?php foreach ($comment_liked_by_users as $liked_user) echo "<span data-id='{$liked_user->id}' data-status='{$liked_user->friendshipStatus}'>{$liked_user->name}</span><br>"; ?>" data-likes=<?= count($comment_liked_by_users) ?>>
+            <?= count($comment_liked_by_users) ?>
+        </span>
 
         <?php if ($own_id == $comment->owner->id) { ?>
             <span>
